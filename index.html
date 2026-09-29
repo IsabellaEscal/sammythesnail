@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<!--
+  Sammy the Snail — personal website (rainy garden edition)
+  ---------------------------------------------------------
+  One HTML file with three "pages" (sections): Home, Story, and Reviews.
+  The navigation bar jumps between them with anchor links (#home, #story, #reviews).
+  All styling, including the falling rain, lives in style.css.
+  Keep the images in the same folder as this file.
+-->
+<html lang="en">
+<head>
+  <!-- Character encoding so special characters display correctly -->
+  <meta charset="UTF-8">
+  <!-- Makes the page scale properly on phones and tablets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Text shown in the browser tab and in search results -->
+  <title>Sammy the Snail · Explorer &amp; Food Critic</title>
+  <meta name="description" content="Sammy the Snail explores the world one slow step at a time and reviews snail-safe foods.">
+
+  <!-- Google Fonts: Young Serif for headings (warm, storybook feel)
+       and Atkinson Hyperlegible for body text (designed to be very easy to read) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Young+Serif&display=swap" rel="stylesheet">
+
+  <!-- Link to the separate stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ============================================================
+       SKIP LINK
+       Hidden until focused with the keyboard; lets keyboard and
+       screen-reader users jump straight past the navigation.
+       ============================================================ -->
+  <a class="skip-link" href="#home">Skip to content</a>
+
+  <!-- ============================================================
+       SITE HEADER + NAVIGATION
+       Stays at the top of the screen while scrolling.
+       Each link jumps to one of the three sections below.
+       ============================================================ -->
+  <header class="site-header">
+    <a class="brand" href="#home">
+      <!-- A small spiral-shell logo drawn with SVG (no image file needed) -->
+      <svg class="brand-shell" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 28c-6.6 0-12-5.4-12-12S9.4 4 16 4s10 4.5 10 10-3.6 8-8 8-6-2.7-6-6 2-4.5 4.5-4.5S20 13 20 15"
+              fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      Sammy the Snail
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#story">My story</a></li>
+        <li><a href="#reviews">Food reviews</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         SECTION 1: HOME
+         Big intro set directly on the rainy background: Sammy's
+         title, a one-line pitch, his photo, and a short About card.
+         ============================================================ -->
+    <section id="home" class="page page-home">
+      <div class="hero">
+
+        <!-- Left side: the words -->
+        <div class="hero-text">
+          <h1 class="hero-title">Sammy<br>the Snail</h1>
+          <!-- The one-line pitch -->
+          <p class="hero-pitch">A small snail with a big appetite for adventure, and an even bigger one for carrots.</p>
+          <!-- Buttons that jump to the other two sections -->
+          <div class="hero-actions">
+            <a class="button button-lemon" href="#story">Read my story</a>
+            <a class="button button-outline-light" href="#reviews">See my food reviews</a>
+          </div>
+        </div>
+
+        <!-- Right side: Sammy's portrait inside an organic, pebble-shaped frame -->
+        <figure class="hero-photo">
+          <img src="sammy-photo.jpg" alt="Sammy the Snail, a small brown-shelled snail, looking toward the camera">
+        </figure>
+      </div>
+
+      <!-- The short About paragraph, on a cream card -->
+      <div class="about card">
+        <h2 class="about-title">About Sammy</h2>
+        <p>
+          Sammy started life as a stowaway, tucked inside a bundle of fresh herbs. Today he is a
+          full-time explorer and part-time food critic who will climb, taste, and investigate
+          anything in his path. Leaves, rocks, moss, puddles: no environment is too strange,
+          and no vegetable goes unjudged. Rainy days are his favorite days.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         SECTION 2: MY STORY
+         Sammy's life told as a timeline (it happens in order, so the
+         chapters are numbered). A little snail drawing crawls down the
+         "slime trail" as you scroll. The last chapter is his big
+         future goal: the Portland Japanese Garden.
+         ============================================================ -->
+    <section id="story" class="page page-story card">
+      <div class="section-head">
+        <h2>My story</h2>
+        <p class="section-intro">How a baby snail in a bunch of herbs became the most curious critter in the garden.</p>
+      </div>
+
+      <!-- The timeline wrapper holds the trail and the chapters -->
+      <div class="timeline-wrap">
+
+        <!-- The slime trail + crawling snail.
+             The trail is a line drawn in CSS. The snail uses
+             "position: sticky", so it stays on screen and slides down
+             the trail while you scroll through the chapters.
+             aria-hidden: it's decoration, so screen readers skip it. -->
+        <div class="trail" aria-hidden="true">
+          <div class="trail-snail">
+            <svg viewBox="0 0 64 48" width="76" height="57">
+              <!-- body -->
+              <path d="M6 41h38c7 0 10-4 11-11l2-8" fill="none" stroke="#D8C49A" stroke-width="7" stroke-linecap="round"/>
+              <!-- antennae with little dots on the ends -->
+              <path d="M57 22l-3-11M57 22l5-10" fill="none" stroke="#D8C49A" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="54" cy="10" r="2.2" fill="#8A6A48"/>
+              <circle cx="62.5" cy="11" r="2.2" fill="#8A6A48"/>
+              <!-- shell with a spiral -->
+              <circle cx="26" cy="25" r="15" fill="#F29A38" stroke="#8A5A1E" stroke-width="2"/>
+              <path d="M26 25a3.5 3.5 0 1 1 3.5 3.5a7.5 7.5 0 1 1 -7.5 -7.5a11 11 0 0 1 11 11"
+                    fill="none" stroke="#8A5A1E" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- The chapters themselves -->
+        <ol class="timeline">
+
+          <!-- Chapter 1: how Sammy was found -->
+          <li class="chapter">
+            <div class="chapter-text">
+              <h3>Found in the herbs</h3>
+              <p>
+                Sammy was first discovered as a tiny baby, no bigger than a lentil, curled up in a bundle
+                of fresh herbs. Instead of being tossed out with the stems, he was scooped up, given a
+                name, and welcomed home. He has been eating well ever since.
+              </p>
+            </div>
+            <figure class="chapter-photo">
+              <img src="sammystone-photo.jpg" alt="Sammy resting on a smooth stone">
+              <figcaption>Sammy taking a break on his favorite stone.</figcaption>
+            </figure>
+          </li>
+
+          <!-- Chapter 2: his enclosure -->
+          <li class="chapter">
+            <div class="chapter-text">
+              <h3>A home of his own</h3>
+              <p>
+                These days Sammy lives in an enclosure built for exploring. Live plants give him
+                something to climb and snack on, a rock cave keeps him cozy, a small pond lets him
+                cool off, and a soft patch of moss is his favorite place to rest after a long day
+                of crawling.
+              </p>
+            </div>
+            <figure class="chapter-photo">
+              <img src="sammyplants-photo.jpg" alt="Sammy crawling among the live plants in his enclosure">
+              <figcaption>Checking every leaf in the enclosure, just to be sure.</figcaption>
+            </figure>
+          </li>
+
+          <!-- Chapter 3: Sammy's future aspiration, the Portland Japanese Garden.
+               It gets the "chapter-future" class so it looks a little different
+               (misty blue) from the chapters that already happened. -->
+          <li class="chapter chapter-future">
+            <div class="chapter-text">
+              <h3>Next stop: the Portland Japanese Garden</h3>
+              <p>
+                Sammy has always dreamed of going somewhere damp and moist where he's free to roam. 
+		While small tastes of Seattle satisfies him now, it won't forever. His biggest dream is to
+                spend a long, slow, drizzly day at the Portland Japanese Garden. He has heard it is one of
+                the most peaceful gardens in the country, and for a snail who loves moss, stone, and
+                water, it sounds like paradise.
+              </p>
+              <p class="dream-list-intro">When he gets there, Sammy plans to:</p>
+              <ul class="dream-list">
+                <li>Rest in the famous moss garden, the softest place he can imagine.</li>
+                <li>Crawl the winding stone paths, one careful pebble at a time.</li>
+                <li>Watch the rain ripple across the ponds.</li>
+                <li>See the Japanese maples turn red and gold in the fall.</li>
+              </ul>
+            </div>
+            <figure class="chapter-photo">
+              <img src="portlandgarden-photo.jpg" alt="Sammy exploring a lush garden in Portland">
+              <figcaption>Sammy's dream: the Portland Japanese Garden.</figcaption>
+            </figure>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         SECTION 3: FOOD REVIEWS + CONTACT
+         Sammy's critiques of snail-safe foods, rated out of 5 snails,
+         then contact details for anyone who wants their food reviewed.
+
+         HOW THE RATINGS WORK:
+         Each <span class="snail"> is one little snail outline (drawn in
+         style.css). Add class "off" to show an empty, faded snail.
+         The aria-label tells screen readers the score in words.
+         ============================================================ -->
+    <section id="reviews" class="page page-reviews card">
+      <div class="section-head">
+        <h2>Food reviews</h2>
+        <p class="section-intro">
+          Honest opinions on snail-safe foods, rated out of five snails.
+          Every food here has been personally tasted by Sammy.
+        </p>
+      </div>
+
+      <!-- Featured reviews: the two foods with photos -->
+      <div class="featured-reviews">
+
+        <!-- Review: Carrot -->
+        <article class="review review-featured">
+          <img src="samcarrot.jpg" alt="Sammy eating a slice of carrot">
+          <div class="review-body">
+            <div class="review-top">
+              <h3>Carrot</h3>
+              <p class="rating" role="img" aria-label="5 out of 5 snails">
+                <span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail"></span>
+              </p>
+            </div>
+            <p class="verdict">The gold standard.</p>
+            <p>
+              Sweet, crunchy, and a color you can spot from across the enclosure. Sammy will travel
+              farther for a carrot than for anything else. He leaves a neat, satisfied trail every time.
+            </p>
+          </div>
+        </article>
+
+        <!-- Review: Kale -->
+        <article class="review review-featured">
+          <img src="samkale.jpg" alt="Sammy resting on a kale leaf">
+          <div class="review-body">
+            <div class="review-top">
+              <h3>Kale</h3>
+              <p class="rating" role="img" aria-label="4 out of 5 snails">
+                <span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail off"></span>
+              </p>
+            </div>
+            <p class="verdict">A leafy all-rounder.</p>
+            <p>
+              Hearty and full of calcium, which keeps Sammy's shell strong. The curly edges make it
+              fun to climb, too. Loses one snail because it's a bit tough on the stems.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Shorter reviews without photos, in a simple list -->
+      <h3 class="more-title">More from the menu</h3>
+      <ul class="review-list">
+        <li class="review review-short">
+          <div class="review-top">
+            <h4>Cucumber</h4>
+            <p class="rating" role="img" aria-label="4 out of 5 snails">
+              <span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail off"></span>
+            </p>
+          </div>
+          <p>Cool and juicy, perfect after a hot Las Vegas afternoon. Mostly water, so it's a snack, not a meal.</p>
+        </li>
+        <li class="review review-short">
+          <div class="review-top">
+            <h4>Zucchini</h4>
+            <p class="rating" role="img" aria-label="4 out of 5 snails">
+              <span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail off"></span>
+            </p>
+          </div>
+          <p>Soft, mild, and easy to munch. A dependable weeknight dinner.</p>
+        </li>
+        <li class="review review-short">
+          <div class="review-top">
+            <h4>Sweet potato</h4>
+            <p class="rating" role="img" aria-label="3 out of 5 snails">
+              <span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail off"></span><span class="snail off"></span>
+            </p>
+          </div>
+          <p>Best served thinly sliced. Tasty, but a slow chew even by snail standards.</p>
+        </li>
+        <li class="review review-short">
+          <div class="review-top">
+            <h4>Romaine lettuce</h4>
+            <p class="rating" role="img" aria-label="3 out of 5 snails">
+              <span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail off"></span><span class="snail off"></span>
+            </p>
+          </div>
+          <p>Crisp and pleasant, but not very filling. Fine as a side salad.</p>
+        </li>
+        <li class="review review-short">
+          <div class="review-top">
+            <h4>Button mushroom</h4>
+            <p class="rating" role="img" aria-label="5 out of 5 snails">
+              <span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail"></span>
+            </p>
+          </div>
+          <p>An earthy surprise. Sammy went back for seconds, which is high praise.</p>
+        </li>
+        <li class="review review-short">
+          <div class="review-top">
+            <h4>Butternut squash</h4>
+            <p class="rating" role="img" aria-label="4 out of 5 snails">
+              <span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail"></span><span class="snail off"></span>
+            </p>
+          </div>
+          <p>Sweet like a carrot's cousin. Nearly made the top spot.</p>
+        </li>
+      </ul>
+
+      <!-- Contact block: invites people to have Sammy review their food -->
+      <div class="contact" id="contact">
+        <div class="contact-text">
+          <h3>Want Sammy to review your food?</h3>
+          <p>
+            Grow veggies? Run a garden or a pet shop? Sammy is always taking new tasting requests,
+            as long as the food is snail-safe. Send him a message and tell him what's on the menu.
+          </p>
+        </div>
+        <!-- <address> is the correct HTML element for contact info -->
+        <address class="contact-details">
+          <p>
+            <span class="contact-label">Email</span>
+            <!-- mailto: opens the visitor's email app with the subject pre-filled -->
+            <a href="mailto:mr.sammythesnail@gmail.com?subject=Food%20review%20request">mr.sammythesnail@gmail.com</a>
+          </p>
+          <p>
+            <span class="contact-label">Location</span>
+            Las Vegas, NV
+          </p>
+          <a class="button button-lemon" href="mailto:mr.sammythesnail@gmail.com?subject=Food%20review%20request">Request a review</a>
+        </address>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       A row of garden leaves (SVG) sits along the top edge of the
+       footer, like the plants at the bottom of a rainy garden bed.
+       ============================================================ -->
+  <footer class="site-footer">
+    <svg class="garden-edge" viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 90V60C20 20 40 20 55 55C60 10 90 5 100 50C120 25 140 30 150 58C165 15 195 10 205 52
+               C225 20 250 25 258 60C275 18 300 12 312 50C330 28 350 30 360 58C380 12 410 8 420 52
+               C440 22 462 25 470 60C488 15 515 10 525 50C545 28 565 30 575 58C592 14 622 8 632 52
+               C652 22 675 25 684 60C700 16 730 10 740 50C760 28 780 30 790 58C806 12 836 8 846 52
+               C866 22 888 25 896 60C914 15 940 10 952 50C972 28 992 30 1000 58C1018 14 1046 8 1058 52
+               C1078 22 1100 25 1108 60C1126 16 1154 10 1164 50C1180 30 1192 35 1200 55V90Z"
+            fill="#3F5A2F"/>
+    </svg>
+    <p>&copy; 2026 Sammy the Snail. Written slowly, with care.</p>
+  </footer>
+
+</body>
+</html>

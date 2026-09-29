@@ -1,0 +1,613 @@
+/* ==================================================================
+   Sammy the Snail — stylesheet (rainy garden edition)
+   ------------------------------------------------------------------
+   Contents:
+     1. Color & font variables
+     2. Base / reset styles
+     3. Rainy garden background (sky, leaves, falling rain)
+     4. Header & navigation
+     5. Buttons
+     6. Shared section & card styles
+     7. Section 1: Home (hero + about)
+     8. Section 2: Story (timeline, crawling snail, garden dream)
+     9. Section 3: Reviews (snail ratings) + contact
+    10. Footer
+    11. Mobile adjustments
+    12. Reduced-motion support
+   ================================================================== */
+
+
+/* ---------- 1. COLOR & FONT VARIABLES ----------
+   Change a color here and it updates everywhere on the site. */
+:root {
+  /* Garden greens + cream (from the original design) */
+  --moss:        #4F6B3A;  /* headings */
+  --moss-deep:   #2F4124;  /* body text on cream */
+  --moss-soft:   #DCE3C8;  /* pale lichen green lines */
+  --cream:       #F7F1DE;  /* card background */
+  --cream-light: #FCF9EF;  /* lighter cream for inner cards */
+  --bark:        #8A6A48;  /* warm brown details */
+
+  /* Soft stormy blues */
+  --storm-deep:  #33485B;  /* darkest storm cloud: top of the sky, contact panel */
+  --storm:       #5B7489;  /* mid storm blue: captions, intro text */
+  --storm-light: #A9BCC9;  /* rain and the slime trail */
+  --mist:        #DDE6EC;  /* pale mist: the Japanese garden panel */
+
+  /* Pops of citrus */
+  --lemon:       #F5CD47;  /* buttons */
+  --lime:        #A7C957;  /* chapter numbers, small labels */
+  --orange:      #F29A38;  /* rating snails */
+
+  --font-heading: "Young Serif", Georgia, "Times New Roman", serif;
+  --font-body:    "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+
+  --page-width: 1080px;    /* maximum width of the content */
+  --header-height: 68px;
+}
+
+
+/* ---------- 2. BASE / RESET STYLES ---------- */
+
+/* Makes width calculations include padding and borders */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;                         /* nav links glide instead of jump */
+  scroll-padding-top: var(--header-height);        /* stops the sticky header covering section titles */
+}
+
+body {
+  margin: 0;
+  color: var(--moss-deep);
+  font-family: var(--font-body);
+  font-size: 1.125rem;       /* 18px: comfortable reading size */
+  line-height: 1.65;
+  background-color: var(--storm-deep);  /* fallback while the background loads */
+}
+
+/* Images never overflow their container.
+   The misty background shows as a placeholder if a photo is missing. */
+img { max-width: 100%; display: block; background-color: #DDE6EC; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 400;          /* Young Serif only comes in one weight */
+  color: var(--moss);
+  line-height: 1.15;
+  margin: 0 0 0.5em;
+}
+
+p { margin: 0 0 1em; }
+
+a { color: var(--moss); text-underline-offset: 3px; }
+a:hover { color: var(--moss-deep); }
+
+/* Clear, visible outline for keyboard users */
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Skip link: off-screen until a keyboard user tabs to it */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  background: var(--storm-deep);
+  color: var(--cream);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+.skip-link:focus { top: 1rem; }
+
+
+/* ---------- 3. RAINY GARDEN BACKGROUND ----------
+   Built in three layers, back to front:
+     a) the body: a stormy sky gradient plus a pattern of dark leaves
+     b) body::before: a layer of small, fast raindrops
+     c) body::after: a layer of longer, slower, fainter raindrops
+   Two rain layers moving at different speeds give the rain depth.
+   The drops and leaves are tiny SVG drawings written straight into
+   the CSS (the "data:image/svg+xml" URLs), so no image files are needed. */
+
+body {
+  background-image:
+    /* leaf silhouettes, scattered and tilted */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'%3E%3Cg fill='%233F5A2F' fill-opacity='0.35'%3E%3Cpath transform='translate(40 70) rotate(-35)' d='M0 0C20-26 64-26 84 0C64 26 20 26 0 0Z'/%3E%3Cpath transform='translate(250 40) rotate(25)' d='M0 0C16-20 50-20 66 0C50 20 16 20 0 0Z'/%3E%3Cpath transform='translate(300 260) rotate(-60)' d='M0 0C22-28 70-28 92 0C70 28 22 28 0 0Z'/%3E%3Cpath transform='translate(90 300) rotate(15)' d='M0 0C14-18 44-18 58 0C44 18 14 18 0 0Z'/%3E%3Cpath transform='translate(180 180) rotate(70)' d='M0 0C12-15 38-15 50 0C38 15 12 15 0 0Z'/%3E%3C/g%3E%3C/svg%3E"),
+    /* stormy sky: dark at the top, lighter and mistier toward the bottom */
+    linear-gradient(180deg, #33485B 0%, #4C6478 45%, #6E8798 100%);
+  background-attachment: fixed;   /* the sky stays still while the page scrolls */
+}
+
+/* Shared settings for both rain layers */
+body::before,
+body::after {
+  content: "";
+  position: fixed;          /* covers the whole screen, always */
+  inset: 0;
+  pointer-events: none;     /* clicks pass straight through the rain */
+  z-index: 0;
+}
+
+/* Rain layer 1: short, quick drops */
+body::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='160' viewBox='0 0 120 160'%3E%3Cpath d='M20 10l-4 18M70 50l-4 18M100 110l-4 18M40 120l-4 18M92 4l-3 14' stroke='%23DDE6EC' stroke-opacity='0.5' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  animation: rain-fast 0.7s linear infinite;
+}
+
+/* Rain layer 2: longer, slower, fainter drops further "back" */
+body::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='260' viewBox='0 0 200 260'%3E%3Cpath d='M30 20l-6 30M140 90l-6 30M90 180l-6 30M180 10l-5 24' stroke='%23A9BCC9' stroke-opacity='0.35' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  animation: rain-slow 1.3s linear infinite;
+}
+
+/* The falling motion: slides each rain pattern down and slightly left
+   by exactly one tile, so the loop is seamless */
+@keyframes rain-fast {
+  from { background-position: 0 0; }
+  to   { background-position: -35px 160px; }
+}
+@keyframes rain-slow {
+  from { background-position: 0 0; }
+  to   { background-position: -52px 260px; }
+}
+
+/* Keeps the page content above the rain layers */
+main, .site-footer { position: relative; z-index: 1; }
+
+
+/* ---------- 4. HEADER & NAVIGATION ---------- */
+.site-header {
+  position: sticky;          /* stays at the top while scrolling */
+  top: 0;
+  z-index: 50;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  background: rgba(51, 72, 91, 0.88);    /* storm blue, slightly see-through */
+  backdrop-filter: blur(6px);            /* softly blurs the rain behind it */
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Logo + name */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--cream-light);
+  text-decoration: none;
+}
+.brand:hover { color: var(--cream-light); }
+.brand-shell { width: 28px; height: 28px; color: var(--lemon); }
+
+/* The three nav links in a row */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: clamp(0.75rem, 3vw, 2rem);
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--mist);
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+}
+.nav-links a:hover { color: var(--cream-light); border-bottom-color: var(--lemon); }
+
+
+/* ---------- 5. BUTTONS ---------- */
+.button {
+  display: inline-block;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;      /* pill shape, like a smooth pebble */
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Lemon button: the main call to action */
+.button-lemon { background: var(--lemon); border-color: var(--lemon); color: var(--storm-deep); }
+.button-lemon:hover { background: #FFE07A; border-color: #FFE07A; color: var(--storm-deep); }
+
+/* Outline button for use on the dark stormy background */
+.button-outline-light { border-color: var(--mist); color: var(--cream-light); }
+.button-outline-light:hover { background: var(--cream-light); color: var(--storm-deep); }
+
+
+/* ---------- 6. SHARED SECTION & CARD STYLES ----------
+   Each section acts as one "page" of the site. */
+.page {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.25rem, 4vw, 2rem);
+}
+
+/* Cream cards float on top of the rainy background so text stays easy to read */
+.card {
+  background: var(--cream);
+  border-radius: 32px;
+  box-shadow: 0 18px 40px rgba(28, 40, 52, 0.35);  /* soft storm-blue shadow */
+}
+
+/* The Story and Reviews cards sit inside the page width with a gap between them */
+.page.card {
+  width: calc(100% - 2 * clamp(1rem, 4vw, 2rem));
+  max-width: calc(var(--page-width) - 2 * clamp(1.25rem, 4vw, 2rem));  /* lines up with the About card */
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+
+.section-head { max-width: 38rem; margin-bottom: 3rem; }
+.section-head h2 { font-size: clamp(2.25rem, 5vw, 3.25rem); }
+.section-intro { font-size: 1.2rem; color: var(--storm); }
+
+
+/* ---------- 7. SECTION 1: HOME ---------- */
+
+/* Two-column layout: text on the left, photo on the right */
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  min-height: calc(80vh - var(--header-height));
+}
+
+/* The big title, in cream, set right on the rainy sky */
+.hero-title {
+  font-size: clamp(3.5rem, 11vw, 7.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35em;
+  color: var(--cream-light);
+  text-shadow: 0 2px 14px rgba(28, 40, 52, 0.45);  /* keeps it crisp over the rain */
+}
+
+.hero-pitch {
+  font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+  max-width: 28rem;
+  margin-bottom: 2rem;
+  color: var(--mist);
+}
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+/* Sammy's photo in a rounded, pebble-like shape with a lemon rim */
+.hero-photo { margin: 0; }
+.hero-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 48% 52% 44% 56% / 40% 42% 58% 60%;  /* uneven curves = natural pebble */
+  border: 8px solid var(--lemon);
+  box-shadow: 0 18px 40px rgba(28, 40, 52, 0.4);
+}
+
+/* About card */
+.about {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  padding: clamp(1.75rem, 4vw, 3rem);
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  gap: 2rem;
+}
+.about-title { font-size: 1.75rem; }
+.about p { max-width: 40rem; margin: 0; }
+
+
+/* ---------- 8. SECTION 2: STORY ---------- */
+
+/* Holds the trail (left) and the chapters (right) */
+.timeline-wrap {
+  position: relative;
+  padding-left: 4rem;        /* room on the left for the trail and snail */
+}
+
+/* The slime trail: runs the full height of the timeline */
+.trail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3.25rem;
+}
+
+/* The glossy slime line itself, in misty storm blue */
+.trail::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 5px;
+  margin-left: -2.5px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--storm-light), var(--mist) 50%, var(--storm-light));
+  opacity: 0.8;
+}
+
+/* The crawling snail.
+   "position: sticky" keeps it pinned halfway down the screen while
+   the timeline scrolls past, so it looks like it's sliding down the
+   trail. It stops at the top and bottom ends of the trail. */
+.trail-snail {
+  position: sticky;
+  top: 50vh;
+  z-index: 2;                /* sits above the chapter number circles */
+  display: flex;
+  justify-content: center;
+  padding: 0.25rem 0;
+}
+/* The drawing faces right, so it's turned 90° to crawl downward.
+   It's also nudged right so the snail's foot sits on the trail line.
+   flex-shrink: 0 stops the drawing being squashed to the trail's width. */
+.trail-snail svg {
+  flex-shrink: 0;
+  transform: translateX(var(--snail-nudge, 20px)) rotate(90deg);
+  filter: drop-shadow(0 3px 4px rgba(51, 72, 91, 0.3));
+}
+
+/* The chapter list */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: chapter;    /* starts the chapter count at 0 */
+}
+
+/* Each chapter: text and photo side by side */
+.chapter {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  margin-bottom: clamp(3rem, 6vw, 4.5rem);
+  counter-increment: chapter;  /* adds 1 to the count for each chapter */
+}
+
+/* The lime numbered circle on the trail for each chapter */
+.chapter::before {
+  content: counter(chapter);
+  position: absolute;
+  left: calc(-4rem + 1.625rem - 1rem);  /* centers the circle on the trail line */
+  top: 0;
+  z-index: 1;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--lime);
+  color: var(--moss-deep);
+  font-family: var(--font-heading);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+}
+
+/* Every other chapter puts the photo on the left for variety */
+.chapter:nth-child(even) .chapter-text  { order: 2; }
+.chapter:nth-child(even) .chapter-photo { order: 1; }
+
+.chapter-text h3 { font-size: 1.75rem; }
+.chapter-text p { max-width: 32rem; }
+
+.chapter-photo { margin: 0; }
+.chapter-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.chapter-photo figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--storm);
+}
+
+/* Chapter 3, the future chapter (Portland Japanese Garden):
+   a misty blue panel so it reads as "still to come" */
+.chapter-future {
+  background: var(--mist);
+  border-radius: 28px;
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  margin-bottom: 0;          /* it's the last chapter, so no gap underneath */
+}
+.chapter-future h3 { color: var(--storm-deep); }
+/* Its number circle lines up with the panel's top padding */
+.chapter-future::before { top: clamp(1.5rem, 3.5vw, 2.5rem); }
+
+/* Sammy's list of plans for the garden */
+.dream-list-intro { font-weight: 700; margin-bottom: 0.5rem; }
+.dream-list { margin: 0; padding-left: 1.25rem; }
+.dream-list li { margin-bottom: 0.5rem; }
+.dream-list li::marker { color: var(--moss); }
+
+
+/* ---------- 9. SECTION 3: REVIEWS + CONTACT ---------- */
+
+/* Title and rating on one line */
+.review-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.review h3, .review h4 { margin: 0; }
+
+/* The rating row */
+.rating {
+  margin: 0;
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+/* One snail outline.
+   The snail shape is an SVG used as a "mask": the span's background
+   color only shows through where the snail's lines are. That means
+   changing background-color recolors the whole snail. */
+.snail {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: var(--orange);   /* a full (earned) snail */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 19.5h15a3 3 0 0 0 3-3v-5'/%3E%3Cpath d='M20.5 11.5l-1.6-4.2M20.5 11.5l1.8-4'/%3E%3Ccircle cx='10' cy='13' r='5.8'/%3E%3Cpath d='M10 13a1.8 1.8 0 1 1 1.8 1.8a3.4 3.4 0 1 1-3.4-3.4'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 19.5h15a3 3 0 0 0 3-3v-5'/%3E%3Cpath d='M20.5 11.5l-1.6-4.2M20.5 11.5l1.8-4'/%3E%3Ccircle cx='10' cy='13' r='5.8'/%3E%3Cpath d='M10 13a1.8 1.8 0 1 1 1.8 1.8a3.4 3.4 0 1 1-3.4-3.4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+/* An empty (not earned) snail: same outline, pale storm blue */
+.snail.off { background-color: var(--storm-light); opacity: 0.6; }
+
+/* Smaller snails for the short reviews */
+.review-short .snail { width: 20px; height: 20px; }
+
+/* Two featured reviews, side by side */
+.featured-reviews {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+.review-featured {
+  background: var(--cream-light);
+  border: 1px solid var(--moss-soft);
+  border-radius: 24px;
+  overflow: hidden;          /* keeps the photo inside the rounded corners */
+}
+.review-featured img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+.review-body { padding: 1.5rem 1.75rem 1.75rem; }
+.review-featured h3 { font-size: 1.75rem; }
+
+/* The short one-line verdict under each featured review title */
+.verdict {
+  font-family: var(--font-heading);
+  color: var(--bark);
+  font-size: 1.15rem;
+  margin: 0.35rem 0 0.75rem;
+}
+
+/* Shorter reviews: a two-column list separated by thin lines */
+.more-title { font-size: 1.6rem; margin-bottom: 1rem; }
+.review-list {
+  list-style: none;
+  margin: 0 0 4rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 3rem;
+}
+.review-short {
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--moss-soft);
+}
+.review-short h4 { font-size: 1.3rem; }
+.review-short p:last-child { margin: 0.4rem 0 0; }
+
+/* Contact block: deep storm-blue panel with lemon and lime accents */
+.contact {
+  background: var(--storm-deep);
+  color: var(--mist);
+  border-radius: 28px;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+.contact h3 { color: var(--cream-light); font-size: 1.9rem; }
+.contact-text p { margin: 0; max-width: 32rem; }
+
+.contact-details { font-style: normal; }  /* browsers italicize <address> by default */
+.contact-details p { margin-bottom: 1rem; }
+.contact-details a:not(.button) { color: var(--cream-light); word-break: break-word; }
+.contact-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--lime);
+}
+
+
+/* ---------- 10. FOOTER ---------- */
+.site-footer {
+  text-align: center;
+  color: var(--mist);
+  font-size: 0.95rem;
+}
+/* The row of leaves across the top of the footer */
+.garden-edge {
+  display: block;
+  width: 100%;
+  height: 70px;
+}
+.site-footer p {
+  margin: 0;
+  padding: 1.25rem 1rem 2rem;
+  background: #3F5A2F;       /* matches the leaf color so they blend together */
+  color: var(--moss-soft);
+}
+
+
+/* ---------- 11. MOBILE ADJUSTMENTS ----------
+   Below 760px wide, two-column layouts stack into one column. */
+@media (max-width: 760px) {
+  .brand { font-size: 1.05rem; }
+  .brand-shell { display: none; }        /* frees up room for the nav */
+  .nav-links a { font-size: 0.95rem; }
+
+  .hero,
+  .about,
+  .chapter,
+  .featured-reviews,
+  .review-list,
+  .contact {
+    grid-template-columns: 1fr;
+  }
+
+  .hero { min-height: auto; }
+  .hero-photo { order: -1; max-width: 22rem; }  /* photo appears above the title */
+  .about { gap: 0.5rem; }
+
+  /* On phones, every chapter shows text first, then photo */
+  .chapter:nth-child(even) .chapter-text  { order: 0; }
+  .chapter:nth-child(even) .chapter-photo { order: 0; }
+
+  /* Narrower trail and a smaller snail */
+  .timeline-wrap { padding-left: 3rem; }
+  .trail { width: 2.25rem; }
+  .trail-snail svg { width: 56px; height: 42px; --snail-nudge: 15px; }
+  .chapter::before { left: calc(-3rem + 1.125rem - 1rem); }
+
+  /* Rating drops below the food name if space is tight */
+  .review-top { flex-wrap: wrap; }
+}
+
+@media (max-width: 420px) {
+  .brand { display: none; }              /* very small screens: nav links only */
+  .site-header { justify-content: center; }
+}
+
+
+/* ---------- 12. REDUCED-MOTION SUPPORT ----------
+   For visitors who have asked their device for less motion:
+   the rain stays visible but stops falling, and scrolling jumps. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  body::before, body::after { animation: none; }
+  .button { transition: none; }
+}
